@@ -1,0 +1,7 @@
+# Torch 2.4 keeps Apple MPS working on macOS 12. Torch 2.7 refuses MPS before macOS 13.
+torch==2.4.1
+torchaudio==2.4.1
+numpy>=1.26,<2.1
+onnxruntime==1.19.2
+# htdemucs. Torch stays at 2.4.1; do not let a later install replace it.
+demucs==4.0.1

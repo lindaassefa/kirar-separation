@@ -17,6 +17,21 @@
 /.next/
 /out/
 
+# onnxruntime-web wasm copied from node_modules before dev and build
+/public/ort/
+
+# separator training environment, vocal checkpoint, and run artifacts
+/separator/.venv/
+/separator/.modal-venv/
+/separator/models/*.onnx
+/separator/runs/
+
+__pycache__/
+*.pyc
+
+# Recreated by next dev. Not part of the project.
+AGENTS.md
+
 # production
 /build
 

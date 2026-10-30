@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Copied from onnxruntime-web before dev and build.
+    "public/ort/**",
+    "separator/.venv/**",
+    "separator/.modal-venv/**",
+    "separator/runs/**",
   ]),
 ]);
 

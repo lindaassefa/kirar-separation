@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kirar Separation
 
-## Getting Started
+I wanted to upload an Ethiopian song and pull the krar out by itself. That did not work.
 
-First, run the development server:
+What the site actually does is split a song into four files: `vocals.wav`, `drums.wav`, `bass.wav`, and `other.wav`. Those come from a pretrained model, HTDemucs. `other.wav` is just whatever is left after vocals, drums, and bass. It is not the krar. I left the krar download turned off so I would not pretend that stem exists.
+
+There is also an optional mode that only makes vocals and an instrumental, using UVR-MDX-NET-Voc_FT. A lead krar can end up in the vocal file in that mode. The instrumental is the mix minus that estimate. It is still not isolated krar.
+
+## What I failed at
+
+The goal was a krar stem. I tried the vocal models I already had, UVR-MDX-NET-Voc_FT and Kim Inst, and listened to the results. I could still hear the drums, and the krar and the singing stayed mixed together. Spending more time tuning those two models was not getting me a krar stem, so I stopped.
+
+I also tried a text-conditioned separator on an 8 second clip that had both krar and singing. It did not pull them apart. I never connected that experiment to the website.
+
+I have a small classifier that can label a short clip as krar, guitar, or piano. That only names the instrument. It does not write audio, and I did not retrain it into a separator.
+
+I also wanted a three minute song finished in under 30 seconds. On a Modal T4, the model itself took about 19 seconds for a 180 second clip. The full wait, from upload until the four wav files were back, was about 61 seconds. The container had to start from zero, and then the four files had to be sent back. So that goal was not met either. GPU inference was fast enough. The rest of the trip was not.
+
+## Run it locally
+
+The vocal checkpoint is not in git. Put `UVR-MDX-NET-Voc_FT.onnx` in `separator/models/` if you want the vocals-and-instrumental mode. Four stems needs the Python packages below. HTDemucs downloads its own weights the first time it runs.
 
 ```bash
+python3 -m venv separator/.venv
+separator/.venv/bin/pip install -r separator/requirements.txt
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Files can be up to 120 MB and 10 minutes.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Without Modal credentials, separation stays on the CPU. That is slow. A three minute song on my Mac was still going after several minutes, which is why I moved the same model to a T4.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The GPU path only runs if the server has Modal credentials. The browser never sees them, and they are not in this repo. If the GPU call fails, it does not silently fall back to the CPU.

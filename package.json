@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/copy-ort.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/copy-ort.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:features": "node --experimental-strip-types scripts/check-preprocess.ts"
   },
   "dependencies": {
     "next": "16.4.3",
+    "onnxruntime-web": "^1.31.1",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
