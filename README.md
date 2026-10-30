@@ -1,6 +1,6 @@
 # Kirar Separation
 
-I wanted to upload an Ethiopian song and pull the krar out by itself. That did not work.
+I wanted to upload an Ethiopian song and pull the krar out by itself. That did not work. The full writeup of what I tried, what I measured, and what failed is in [EXPERIMENT.md](EXPERIMENT.md).
 
 What the site actually does is split a song into four files: `vocals.wav`, `drums.wav`, `bass.wav`, and `other.wav`. Those come from a pretrained model, HTDemucs. `other.wav` is just whatever is left after vocals, drums, and bass. It is not the krar. I left the krar download turned off so I would not pretend that stem exists.
 
